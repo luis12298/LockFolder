@@ -1,0 +1,12 @@
+Windows Registry Editor Version 5.00
+
+; Eliminar el menú principal "Accion carpeta"
+[-HKEY_CLASSES_ROOT\Directory\shell\AccionCarpeta]
+
+; Eliminar los comandos en CommandStore
+[-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\shell\ProtegerCarpeta]
+[-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\shell\DesprotegerCarpeta]
+
+; Eliminar la vinculación de comandos al menú principal
+[-HKEY_CLASSES_ROOT\Directory\ContextMenus\AccionCarpeta]
+

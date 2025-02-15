@@ -1,0 +1,47 @@
+Windows Registry Editor Version 5.00
+
+; Crear el menú principal "Accion carpeta"
+[HKEY_CLASSES_ROOT\Directory\shell\AccionCarpeta]
+@="Accion carpeta"
+"Icon"="C:\\LockFolder\\folder.ico"
+"SubCommands"=""
+"MUIVerb"="Accion carpeta"
+
+; Crear los comandos en CommandStore con ejecución como Administrador
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\shell\BloquearCarpeta]
+@="Bloquear Carpeta"
+"Icon"="C:\\LockFolder\\iconLock.ico"
+"HasLUAShield"=""
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\shell\BloquearCarpeta\command]
+@="\"C:\\LockFolder\\folder.exe\" \"%1\" set"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\shell\DesbloquearCarpeta]
+@="Desbloquear Carpeta"
+"Icon"="C:\\LockFolder\\iconUnlock.ico"
+"HasLUAShield"=""
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\CommandStore\shell\DesbloquearCarpeta\command]
+@="cmd /c start \"\" /B /D \"C:\\LockFolder\" /HIGH \"C:\\LockFolder\\folder.exe\" \"%1\" restore"
+
+; Vincular los comandos al menú principal
+[HKEY_CLASSES_ROOT\Directory\shell\AccionCarpeta]
+"ExtendedSubCommandsKey"="Directory\\ContextMenus\\AccionCarpeta"
+
+[HKEY_CLASSES_ROOT\Directory\ContextMenus\AccionCarpeta\Shell]
+
+[HKEY_CLASSES_ROOT\Directory\ContextMenus\AccionCarpeta\Shell\BloquearCarpeta]
+"MUIVerb"="Bloquear Carpeta"
+"Icon"="C:\\LockFolder\\iconLock.ico"
+"CommandFlags"=dword:00000000
+
+[HKEY_CLASSES_ROOT\Directory\ContextMenus\AccionCarpeta\Shell\BloquearCarpeta\command]
+@="cmd /c start \"\" /B /D \"C:\\LockFolder\" /HIGH \"C:\\LockFolder\\folder.exe\" \"%1\" set"
+
+[HKEY_CLASSES_ROOT\Directory\ContextMenus\AccionCarpeta\Shell\DesbloquearCarpeta]
+"MUIVerb"="Desbloquear Carpeta"
+"Icon"="C:\\LockFolder\\iconUnlock.ico"
+"CommandFlags"=dword:00000000
+
+[HKEY_CLASSES_ROOT\Directory\ContextMenus\AccionCarpeta\Shell\DesbloquearCarpeta\command]
+@="cmd /c start \"\" /B /D \"C:\\LockFolder\" /HIGH \"C:\\LockFolder\\folder.exe\" \"%1\" restore"
