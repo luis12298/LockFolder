@@ -1,0 +1,2 @@
+# LockFolder
+Bloquear una carpeta
