@@ -1,0 +1,12 @@
+C:\Users\Gerardo\source\repos\ConsoleApp1\ConsoleApp1\bin\Release\ConsoleApp1.exe.config
+C:\Users\Gerardo\source\repos\ConsoleApp1\ConsoleApp1\bin\Release\ConsoleApp1.exe
+C:\Users\Gerardo\source\repos\ConsoleApp1\ConsoleApp1\bin\Release\ConsoleApp1.pdb
+C:\Users\Gerardo\source\repos\ConsoleApp1\ConsoleApp1\bin\Release\Microsoft.Windows.Design.Interaction.dll
+C:\Users\Gerardo\source\repos\ConsoleApp1\ConsoleApp1\bin\Release\Microsoft.Windows.Design.Extensibility.dll
+C:\Users\Gerardo\source\repos\ConsoleApp1\ConsoleApp1\bin\Release\en\Microsoft.Windows.Design.Interaction.resources.dll
+C:\Users\Gerardo\source\repos\ConsoleApp1\ConsoleApp1\bin\Release\en\Microsoft.Windows.Design.Extensibility.resources.dll
+C:\Users\Gerardo\source\repos\ConsoleApp1\ConsoleApp1\obj\Release\ConsoleApp1.csproj.AssemblyReference.cache
+C:\Users\Gerardo\source\repos\ConsoleApp1\ConsoleApp1\obj\Release\ConsoleApp1.csproj.CoreCompileInputs.cache
+C:\Users\Gerardo\source\repos\ConsoleApp1\ConsoleApp1\obj\Release\ConsoleApp1.csproj.CopyComplete
+C:\Users\Gerardo\source\repos\ConsoleApp1\ConsoleApp1\obj\Release\ConsoleApp1.exe
+C:\Users\Gerardo\source\repos\ConsoleApp1\ConsoleApp1\obj\Release\ConsoleApp1.pdb

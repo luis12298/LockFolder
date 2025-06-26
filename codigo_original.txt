@@ -1,0 +1,145 @@
+﻿windows using System;
+using System.Diagnostics;
+using System.IO;
+
+namespace SecureFolder
+{
+    class Program
+    {
+        static readonly string PASSWORD = Environment.GetEnvironmentVariable("PASS_FOLDER");
+
+        static void Main(string[] args)
+        {
+            if (args.Length < 2)
+            {
+                Console.WriteLine("Uso: securefolder.exe <ruta_de_carpeta> <set/restore>");
+                return;
+            }
+
+            string folderPath = args[0]; // Ruta de la carpeta
+            string action = args[1].ToLower(); // Acción (set o restore)
+
+            if (!Directory.Exists(folderPath))
+            {
+                Console.WriteLine("La ruta proporcionada no es una carpeta válida.");
+                return;
+            }
+
+            if (action == "set")
+            {
+                SetPermissions(folderPath);
+            }
+            else if (action == "restore")
+            {
+                RestorePermissions(folderPath);
+            }
+            else
+            {
+                Console.WriteLine("Acción no reconocida. Usa 'set' o 'restore'.");
+            }
+        }
+
+        static void SetPermissions(string folderPath)
+        {
+            try
+            {
+                Console.WriteLine($"Bloqueando carpeta: {folderPath}");
+
+                // Quitar la herencia y eliminar permisos existentes
+                RunCommand("icacls", $"\"{folderPath}\" /inheritance:r");
+
+                // Denegar acceso total a todos los usuarios, incluyendo administradores y SYSTEM
+                RunCommand("icacls", $"\"{folderPath}\" /deny *S-1-1-0:(OI)(CI)F"); // Everyone
+                RunCommand("icacls", $"\"{folderPath}\" /deny *S-1-5-32-544:(OI)(CI)F"); // Administrators
+                RunCommand("icacls", $"\"{folderPath}\" /deny *S-1-5-18:(OI)(CI)F"); // SYSTEM
+
+                // Denegar la capacidad de cambiar permisos
+                RunCommand("icacls", $"\"{folderPath}\" /deny *S-1-1-0:(OI)(CI)(WD,AD,DC)"); // Everyone
+                RunCommand("icacls", $"\"{folderPath}\" /deny *S-1-5-32-544:(OI)(CI)(WD,AD,DC)"); // Administrators
+                RunCommand("icacls", $"\"{folderPath}\" /deny *S-1-5-18:(OI)(CI)(WD,AD,DC)"); // SYSTEM
+
+                // Quitar el permiso de "Tomar posesión" para todos
+                RunCommand("icacls", $"\"{folderPath}\" /deny *S-1-1-0:(OI)(CI)(WO)"); // Everyone
+                RunCommand("icacls", $"\"{folderPath}\" /deny *S-1-5-32-544:(OI)(CI)(WO)"); // Administrators
+                RunCommand("icacls", $"\"{folderPath}\" /deny *S-1-5-18:(OI)(CI)(WO)"); // SYSTEM
+
+                Console.WriteLine("Carpeta bloqueada completamente. ");
+                Console.WriteLine("Presione cualquier tecla para cerrar.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al bloquear la carpeta: {ex.Message}");
+            }
+            Console.ReadKey();
+        }
+
+        static void RestorePermissions(string folderPath)
+        {
+            Console.Write("Introduce la contraseña para restaurar permisos: ");
+            string inputPassword = Console.ReadLine();
+
+            if (inputPassword != PASSWORD)
+            {
+                Console.WriteLine("Contraseña incorrecta. Se registrará el intento.");
+                File.AppendAllText("log.txt", $"Intento fallido en {DateTime.Now}\n");
+                Console.ReadKey();
+                return;
+            }
+
+            try
+            {
+                Console.WriteLine($"Restaurando permisos en: {folderPath}");
+
+                // Restaurar herencia
+                RunCommand("icacls", $"\"{folderPath}\" /inheritance:e");
+
+                // Quitar restricciones impuestas anteriormente
+                RunCommand("icacls", $"\"{folderPath}\" /remove:d *S-1-1-0"); // Everyone
+                RunCommand("icacls", $"\"{folderPath}\" /remove:d *S-1-5-32-544"); // Administrators
+                RunCommand("icacls", $"\"{folderPath}\" /remove:d *S-1-5-18"); // SYSTEM
+
+                // Restaurar permisos completos
+                RunCommand("icacls", $"\"{folderPath}\" /grant *S-1-1-0:(OI)(CI)F"); // Everyone
+                RunCommand("icacls", $"\"{folderPath}\" /grant *S-1-5-32-544:(OI)(CI)F"); // Administrators
+                RunCommand("icacls", $"\"{folderPath}\" /grant *S-1-5-18:(OI)(CI)F"); // SYSTEM
+
+                Console.WriteLine("Carpeta desbloqueada.\nPresione cualquier tecla para cerrar");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al restaurar permisos: {ex.Message}");
+            }
+            Console.ReadKey();
+        }
+
+        static void RunCommand(string command, string arguments)
+        {
+            ProcessStartInfo psi = new ProcessStartInfo
+            {
+                FileName = command,
+                Arguments = arguments,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using (Process process = Process.Start(psi))
+            {
+                string output = process.StandardOutput.ReadToEnd();
+                string error = process.StandardError.ReadToEnd();
+
+                process.WaitForExit();
+
+                if (!string.IsNullOrEmpty(output))
+                {
+                    Console.WriteLine("Salida: " + output);
+                }
+                if (!string.IsNullOrEmpty(error))
+                {
+                    Console.WriteLine("Error: " + error);
+                }
+            }
+        }
+    }
+} 
