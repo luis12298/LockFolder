@@ -1,15 +1,23 @@
 Windows Registry Editor Version 5.00
 
-; Agregar opción "Proteger Carpeta" al menú contextual
-[HKEY_CLASSES_ROOT\Directory\shell\ProtegerCarpeta]
-@="Proteger Carpeta"
+; Crear submenú principal "Acción carpeta"
+[HKEY_CLASSES_ROOT\Directory\shell\AccionCarpeta]
+"MUIVerb"="Accion carpeta"
+"SubCommands"=""
+"Icon"="C:\\LockFolder\\folder.ico"
 
-[HKEY_CLASSES_ROOT\Directory\shell\ProtegerCarpeta\command]
+; Submenú para "Bloquear Carpeta"
+[HKEY_CLASSES_ROOT\Directory\shell\AccionCarpeta\shell\BloquearCarpeta]
+@="Bloquear Carpeta"
+"Icon"="C:\\LockFolder\\iconLock.ico"
+
+[HKEY_CLASSES_ROOT\Directory\shell\AccionCarpeta\shell\BloquearCarpeta\command]
 @="\"C:\\LockFolder\\folder.exe\" \"%1\" set"
 
-; Agregar opción "Desproteger Carpeta" al menú contextual
-[HKEY_CLASSES_ROOT\Directory\shell\DesprotegerCarpeta]
-@="Desproteger Carpeta"
+; Submenú para "Desbloquear Carpeta"
+[HKEY_CLASSES_ROOT\Directory\shell\AccionCarpeta\shell\DesbloquearCarpeta]
+@="Desbloquear Carpeta"
+"Icon"="C:\\LockFolder\\iconUnlock.ico"
 
-[HKEY_CLASSES_ROOT\Directory\shell\DesprotegerCarpeta\command]
+[HKEY_CLASSES_ROOT\Directory\shell\AccionCarpeta\shell\DesbloquearCarpeta\command]
 @="\"C:\\LockFolder\\folder.exe\" \"%1\" restore"
